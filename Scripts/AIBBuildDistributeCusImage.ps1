@@ -57,8 +57,8 @@ $identityNameResourceId=$(Get-AzUserAssignedIdentity -ResourceGroupName $imageRe
 $identityNamePrincipalId=$(Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName).PrincipalId
 
 ## ASSIGN PERMISSIONS FOR THIS IDENTITY TO DISTRIBUTE IMAGES
-$aibRoleImageCreationUrl="https://raw.githubusercontent.com/TomHickling/AzureImageBuilder/master/aibRoleImageCreation.json"
-$aibRoleImageCreationPath = "aibRoleImageCreation.json"
+$aibRoleImageCreationUrl="https://raw.githubusercontent.com/Romero05/AzureImageBuilder/master/Templates/AIBRoleImageCreation.json"
+$aibRoleImageCreationPath = "AIBRoleImageCreation.json"
 
 # Download config
 Invoke-WebRequest -Uri $aibRoleImageCreationUrl -OutFile $aibRoleImageCreationPath -UseBasicParsing
@@ -67,7 +67,7 @@ Invoke-WebRequest -Uri $aibRoleImageCreationUrl -OutFile $aibRoleImageCreationPa
 ((Get-Content -path $aibRoleImageCreationPath -Raw) -replace 'Azure Image Builder Service Image Creation Role', $imageRoleDefName) | Set-Content -Path $aibRoleImageCreationPath
 
 # Create the  role definition
-New-AzRoleDefinition -InputFile  ./aibRoleImageCreation.json
+New-AzRoleDefinition -InputFile  ./AIBRoleImageCreation.json
 
 # Grant role definition to image builder service principal
 New-AzRoleAssignment -ObjectId $identityNamePrincipalId -RoleDefinitionName $imageRoleDefName -Scope "/subscriptions/$subscriptionID/resourceGroups/$imageResourceGroup"
@@ -119,12 +119,10 @@ New-AzGallery `
 
 
 ## 3.2 DOWNLOAD AND CONFIGURE THE TEMPLATE WITH YOUR PARAMS
-   $templateFilePath = "armTemplateWinSIG.json"
+$templateUrl="https://raw.githubusercontent.com/Romero05/AzureImageBuilder/master/Templates/AIBCustomWinSIG.json"
+$templateFilePath = "AIBCustomWinSIG.json"
 
-Invoke-WebRequest `
-   -Uri "https://raw.githubusercontent.com/TomHickling/AzureImageBuilder/master/AIBWin10MS.json" `
-   -OutFile $templateFilePath `
-   -UseBasicParsing
+Invoke-WebRequest -Uri $templateUrl -OutFile $templateFilePath -UseBasicParsing
 
 (Get-Content -path $templateFilePath -Raw ) `
    -replace '<subscriptionID>',$subscriptionID | Set-Content -Path $templateFilePath
