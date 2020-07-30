@@ -58,20 +58,13 @@
                     {
                         "type": "PowerShell",
                         "name": "CreateBuildPath",
-                        "scriptUri": "https://raw.githubusercontent.com/TomHickling/AzureImageBuilder/master/AIBWin10MSImageBuildTeamMedia.ps1"
+                        "scriptUri": "https://raw.githubusercontent.com/Romero05/AzureImageBuilder/master/Scripts/AIBWin10ImageBuildApps.ps1"
                     },
                     {
                         "type": "WindowsRestart",
                         "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM  > c:\\temp\\buildArtifacts\\azureImageBuilderRestart.txt",
                         "restartTimeout": "5m"
-                    },
-                    {
-                        "type": "File",
-                        "name": "downloadBuildArtifacts",
-                        "sourceUri": "https://raw.githubusercontent.com/TomHickling/AzureImageBuilder/master/index.html",
-                        "destination":"c:\\temp\\buildArtifacts\\index.html"
-                    },
-        
+                    },    
                     {
                         "type": "PowerShell",
                         "name": "settingUpMgmtAgtPath",
