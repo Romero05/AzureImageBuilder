@@ -1,6 +1,6 @@
-ur﻿### 1. IF NOT ALREADY PRESENT REGISTER THE AZURE IMAGE BUILDER SERVICE WHILST IN PREVIEW###
+### 1. IF NOT ALREADY PRESENT REGISTER THE AZURE IMAGE BUILDER SERVICE WHILST IN PREVIEW###
 #Register AIB
-Install-Module Az -Force
+<#Install-Module Az -Force
 Connect-AzAccount
 Register-AzProviderFeature -ProviderNamespace Microsoft.VirtualMachineImages -FeatureName VirtualMachineTemplatePreview
 #Check Registration status
@@ -14,7 +14,7 @@ Get-AzResourceProvider -ProviderNamespace Microsoft.Storage | Select-Object Regi
 Register-AzResourceProvider -ProviderNamespace Microsoft.VirtualMachineImages
 Register-AzResourceProvider -ProviderNamespace Microsoft.Storage
 Register-AzResourceProvider -ProviderNamespace Microsoft.Compute
-Register-AzResourceProvider -ProviderNamespace Microsoft.KeyVault
+Register-AzResourceProvider -ProviderNamespace Microsoft.KeyVault#>
 
 ##Once registered begin your AIB image deployment##
 
@@ -24,13 +24,13 @@ $currentAzContext = Get-AzContext
 # Get your current subscription ID. 
 $subscriptionID=$currentAzContext.Subscription.Id
 # Destination image resource group
-$imageResourceGroup="AzureImageBuilder3"
+$imageResourceGroup="RG_AIB_Demo"
 # Location
-$location="northeurope"
+$location="eastus"
 # Image distribution metadata reference name
-$runOutputName="aibCustWinManImg02ro"
+$runOutputName="aibCustWinImgv1"
 # Image template name
-$imageTemplateName="helloImageTemplateWin10ps"
+$imageTemplateName="aibCustWin10multi2004"
 # Distribution properties object name (runOutput).
 # This gives you the properties of the managed image on completion.
 $runOutputName="winclientR01"
@@ -73,20 +73,20 @@ New-AzRoleDefinition -InputFile  ./aibRoleImageCreation.json
 New-AzRoleAssignment -ObjectId $identityNamePrincipalId -RoleDefinitionName $imageRoleDefName -Scope "/subscriptions/$subscriptionID/resourceGroups/$imageResourceGroup"
 
 ### NOTE: If you see this error: 'New-AzRoleDefinition: Role definition limit exceeded. No more role definitions can be created.' See this article to resolve:
-https://docs.microsoft.com/azure/role-based-access-control/troubleshooting
+###https://docs.microsoft.com/azure/role-based-access-control/troubleshooting
 
 ## 3. CREATE THE SHARED IMAGE GALLERY
 # Set Image gallery name
-$sigGalleryName= "AIBSIG"
+$sigGalleryName= "SIG_AIB_Demo"
 
 # Image definition name - define an appropriate name
 # Server:
 $imageDefName ="winSvrimage"
 # Or Win 10 Client 
-$imageDefName ="win10imageAppsTeams"
+$imageDefName ="AIBDemo_Prodv1"
 
 # Additional replication region, this is the secondary Azure region in addition to the $location above.
-$replRegion2="westeurope"
+$replRegion2="westus"
 
 # Create the gallery
 New-AzGallery `
@@ -95,7 +95,7 @@ New-AzGallery `
    -Location $location
 
 # 3.1 Create the image "definition", Windows Server or Windows client below - choose one.
-New-AzGalleryImageDefinition `
+<#New-AzGalleryImageDefinition `
    -GalleryName $sigGalleryName `
    -ResourceGroupName $imageResourceGroup `
    -Location $location `
@@ -104,7 +104,7 @@ New-AzGalleryImageDefinition `
    -OsType Windows `
    -Publisher 'myCompany' `
    -Offer 'WindowsServer' `
-   -Sku 'WinSrv2019'
+   -Sku 'WinSrv2019'#>
 
    New-AzGalleryImageDefinition `
    -GalleryName $sigGalleryName `
@@ -172,7 +172,7 @@ New-AzResourceGroupDeployment `
 
 
    #Get image version created
-   $imageVersion = Get-AzGalleryImageVersion -ResourceGroupName $imageResourceGroup -GalleryName $sigGalleryName -GalleryImageDefinitionName $imageDefName
+   <#$imageVersion = Get-AzGalleryImageVersion -ResourceGroupName $imageResourceGroup -GalleryName $sigGalleryName -GalleryImageDefinitionName $imageDefName
 
    #Create the VM in the second region 
    $vmResourceGroup = "myResourceGroup"
@@ -206,5 +206,5 @@ Add-AzVMNetworkInterface -Id $nic.Id
 
 # Create a virtual machine
 New-AzVM -ResourceGroupName $vmResourceGroup -Location $replRegion2 -VM $vmConfig
-   -GalleryImageDefinitionName $imageDefName
+   -GalleryImageDefinitionName $imageDefName#>
 
