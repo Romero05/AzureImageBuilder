@@ -72,8 +72,7 @@
                             "mkdir c:\\Temp\\buildActions",
                             "echo Azure-Image-Builder-Was-Here  > c:\\temp\\buildActions\\buildActionsOutput.txt"
                         ]
-                    },
-                        
+                    },    
                     {
                         "type": "WindowsUpdate",
                         "searchCriteria": "IsInstalled=0",
