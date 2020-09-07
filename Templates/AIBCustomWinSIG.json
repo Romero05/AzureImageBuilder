@@ -55,42 +55,6 @@
             },
             "customize": [
 
-                    {
-                        "type": "PowerShell",
-                        "name": "CreateBuildPath",
-                        "scriptUri": "https://raw.githubusercontent.com/Romero05/AzureImageBuilder/master/Scripts/AIBWin10ImageBuildApps.ps1"
-                    },
-                    {
-                        "type": "WindowsRestart",
-                        "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM  > c:\\temp\\buildArtifacts\\azureImageBuilderRestart.txt",
-                        "restartTimeout": "5m"
-                    },
-                    {
-                        "type": "File",
-                        "name": "downloadBuildArtifacts",
-                        "sourceUri": "https://raw.githubusercontent.com/TomHickling/AzureImageBuilder/master/index.html",
-                        "destination":"c:\\temp\\buildArtifacts\\index.html"
-                    },
-        
-                    {
-                        "type": "PowerShell",
-                        "name": "settingUpMgmtAgtPath",
-                        "inline": [
-                            "mkdir c:\\Temp\\buildActions",
-                            "echo Azure-Image-Builder-Was-Here  > c:\\temp\\buildActions\\buildActionsOutput.txt"
-                        ]
-                    },
-                        
-                    {
-                        "type": "WindowsUpdate",
-                        "searchCriteria": "IsInstalled=0",
-                        "filters": [
-                            "exclude:$_.Title -like '*Preview*'",
-                            "include:$true"
-                                    ],
-                        "updateLimit": 40
-                    }
-
             ],
             "distribute": 
             [
